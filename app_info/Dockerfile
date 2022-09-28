@@ -1,11 +1,16 @@
-FROM ubuntu:latest
+FROM python:slim
 
-RUN apt update
-RUN apt install python3 -y
-RUN apt-get install -y python3-psutil
+# This is to work in the directory.
+WORKDIR /usr/local/app_info
 
-WORKDIR /usr/app/src
+# copy the requirement file to install the required packages. 
+COPY ./src/requirements.txt .
 
-COPY code.py ./
+# fire the run command to install the packages
+RUN pip3 install -r requirements.txt
 
-CMD [ "python3", "./code.py"]
+# copy the python code to run on container
+COPY ./src/code.py .
+
+# run the python command to execute the python code
+CMD ["python" , "code.py"]
